@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helmusers.fullname" . }}
+  labels:
+    {{- include "helmusers.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      nodePort: {{ .Values.service.nodeport }} # add this line for static node port on our environment
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "helmusers.selectorLabels" . | nindent 4 }}
